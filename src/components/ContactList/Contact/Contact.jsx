@@ -1,6 +1,6 @@
 import s from "./Contact.module.css"
 import { useDispatch } from 'react-redux';
-import { deleteContact } from "../../../reduce/contactsSlice";
+import { deleteContact } from "../../../redux/contactsSlice";
 
 
 
