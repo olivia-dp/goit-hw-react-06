@@ -11,18 +11,15 @@ const slice = createSlice({
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ],
   },
+  selectors: {
+    selectContacts: (state) => state.items,
+  },
   reducers: {
     addNewContact: (state, action) => {
-      return {
-        ...state,
-        items: [...state.items, action.payload],
-      };
+       state.items.push(action.payload);
     },
     deleteContact: (state, action) => {
-      return {
-        ...state,
-        items: state.items.filter((item) => item.id !== action.payload),
-      };
+      state.items = state.items.filter((item) => item.id !== action.payload);
     },
   },
 });
@@ -31,3 +28,13 @@ export default slice.reducer;
 
 export const { addNewContact, deleteContact} = slice.actions;
 
+export const { selectContacts } = slice.selectors;
+
+
+// contactsSlice.js має включати:
+// редьюсери addContact та deleteContact
+// функцію-селектор selectContacts
+// :white_check_mark: filtersSlice.js має включати:
+// редьюсери редьюсер changeFilter
+// функцію-селектор selectNameFilter
+// ментор писав у себе
