@@ -13,29 +13,12 @@ const LIST = [
 
 
 function App() {
-  const [searchValue, setSearchValue] = useState('');
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = localStorage.getItem("saved-Contacts");
-    if (savedContacts !== null) {
-      return JSON.parse(savedContacts)
-    }
-    return LIST; 
-  });
-
-   const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(searchValue.toLowerCase())
-  );
-
-  useEffect(() => {
-    localStorage.setItem("saved-Contacts", JSON.stringify(contacts));
-  }, [contacts]);
-
   return (
     <>
       <h1>Phonebook</h1>
-      <ContactForm setContacts={setContacts}/>
-      <SearchBox searchValue={searchValue} onSearchChange={setSearchValue} />
-      <ContactList contacts={filteredContacts} setContacts={setContacts} />
+      <ContactForm/>
+      <SearchBox/>
+      <ContactList/>
     </>
   )
 }

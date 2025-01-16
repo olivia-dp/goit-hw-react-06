@@ -3,29 +3,44 @@ import { nanoid } from 'nanoid';
 import * as Yup from "yup";
 import { ErrorMessage } from "formik";
 import s from "./ContactForm.module.css";
+import { useDispatch } from 'react-redux';
+import { addNewContact } from '../../reduce/contactsSlice';
 
 const initialValues = {
   name: "",
   number: "",
 };
-const ContactForm = ({ setContacts }) => {
-  const FeedbackSchema = Yup.object().shape({
-    name: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required"),
-    number: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required")
-});
-    const addNewContact = (values, actions) => {
-    const newContact = {
-      id: nanoid(),
-      name: values.name,
-      number: values.number,
-      };
-		actions.resetForm();
 
-    setContacts(prev => [...prev, newContact]);
-  };
+const ContactForm = () => {
+  const FeedbackSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(3, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    number: Yup.string()
+      .matches(/^\d+$/, "Number must contain only digits") // Проверка только чисел
+      .min(3, "Too Short!")
+      .max(15, "Too Long!")
+      .required("Required"),
+  });
   
+  const dispatch = useDispatch();
+  
+const handleSubmit = (values, actions) => {
+    dispatch(
+      addNewContact({
+        id: nanoid(),
+        name: values.name,
+        number: values.number,
+      })
+    );
+
+    actions.resetForm();
+  };
+
+
   return (
-      <Formik initialValues={ initialValues } onSubmit={addNewContact} validationSchema={FeedbackSchema} >
+      <Formik initialValues={ initialValues } onSubmit={handleSubmit} validationSchema={FeedbackSchema} >
         <Form className={s.form}>
           <label>Name</label>
           <Field type="text" name="name" className={s.field} />
